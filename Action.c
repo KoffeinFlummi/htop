@@ -577,7 +577,7 @@ static const struct {
 } helpLeft[] = {
    { .key = "      #: ",  .roInactive = false, .info = "hide/show header meters" },
    { .key = "    Tab: ",  .roInactive = false, .info = "switch to next screen tab" },
-   { .key = " Arrows: ",  .roInactive = false, .info = "scroll process list" },
+   { .key = "   hjkl: ",  .roInactive = false, .info = "scroll process list" },
    { .key = " Digits: ",  .roInactive = false, .info = "incremental PID search" },
    { .key = "   F3 /: ",  .roInactive = false, .info = "incremental name search" },
    { .key = "   F4 \\: ", .roInactive = false, .info = "incremental name filtering" },
@@ -605,7 +605,7 @@ static const struct {
    { .key = "  Space: ", .roInactive = false, .info = "tag process" },
    { .key = "      c: ", .roInactive = false, .info = "tag process and its children" },
    { .key = "      U: ", .roInactive = false, .info = "untag all processes" },
-   { .key = "   F9 k: ", .roInactive = true,  .info = "kill process/tagged processes" },
+   { .key = "   F9 x: ", .roInactive = true,  .info = "kill process/tagged processes" },
    { .key = "   F7 ]: ", .roInactive = true,  .info = "higher priority (root only)" },
    { .key = "   F8 [: ", .roInactive = true,  .info = "lower priority (+ nice)" },
 #if (defined(HAVE_LIBHWLOC) || defined(HAVE_AFFINITY))
@@ -613,15 +613,15 @@ static const struct {
 #endif
    { .key = "      e: ", .roInactive = false, .info = "show process environment" },
    { .key = "      i: ", .roInactive = true,  .info = "set IO priority" },
-   { .key = "      l: ", .roInactive = true,  .info = "list open files with lsof" },
-   { .key = "      x: ", .roInactive = false, .info = "list file locks of process" },
+   { .key = "      L: ", .roInactive = true,  .info = "list open files with lsof" },
+   { .key = "      X: ", .roInactive = false, .info = "list file locks of process" },
    { .key = "      s: ", .roInactive = true,  .info = "trace syscalls with strace" },
    { .key = "      w: ", .roInactive = false, .info = "wrap process command in multiple lines" },
 #ifdef SCHEDULER_SUPPORT
    { .key = "      Y: ", .roInactive = true,  .info = "set scheduling policy" },
 #endif
    { .key = " F2 C S: ", .roInactive = false, .info = "setup" },
-   { .key = " F1 h ?: ", .roInactive = false, .info = "show this help screen" },
+   { .key = "   F1 ?: ", .roInactive = false, .info = "show this help screen" },
    { .key = "  F10 q: ", .roInactive = false, .info = "quit" },
    { .key = NULL, .info = NULL }
 };
@@ -821,6 +821,7 @@ void Action_setBindings(Htop_Action* keys) {
    keys['H'] = actionToggleUserlandThreads;
    keys['I'] = actionInvertSortOrder;
    keys['K'] = actionToggleKernelThreads;
+   keys['L'] = actionLsof;
    keys['M'] = actionSortByMemory;
    keys['N'] = actionSortByPID;
    keys['O'] = actionToggleRunningInContainer;
@@ -831,6 +832,7 @@ void Action_setBindings(Htop_Action* keys) {
 #ifdef SCHEDULER_SUPPORT
    keys['Y'] = actionSetSchedPolicy;
 #endif
+   keys['X'] = actionShowLocks;
    keys['Z'] = actionTogglePauseProcessUpdate;
    keys['['] = actionLowerPriority;
    keys['\014'] = actionRedraw; // Ctrl+L
@@ -840,9 +842,6 @@ void Action_setBindings(Htop_Action* keys) {
    keys['a'] = actionSetAffinity;
    keys['c'] = actionTagAllChildren;
    keys['e'] = actionShowEnvScreen;
-   keys['h'] = actionHelp;
-   keys['k'] = actionKill;
-   keys['l'] = actionLsof;
    keys['m'] = actionToggleMergedCommand;
    keys['p'] = actionToggleProgramPath;
    keys['q'] = actionQuit;
@@ -850,7 +849,7 @@ void Action_setBindings(Htop_Action* keys) {
    keys['t'] = actionToggleTreeView;
    keys['u'] = actionFilterByUser;
    keys['w'] = actionShowCommandScreen;
-   keys['x'] = actionShowLocks;
+   keys['x'] = actionKill;
    keys[KEY_F(1)] = actionHelp;
    keys[KEY_F(2)] = actionSetup;
    keys[KEY_F(3)] = actionIncSearch;
@@ -862,6 +861,7 @@ void Action_setBindings(Htop_Action* keys) {
    keys[KEY_F(9)] = actionKill;
    keys[KEY_F(10)] = actionQuit;
    keys[KEY_F(18)] = actionExpandCollapseOrSortColumn;
+   keys['o'] = actionExpandCollapseOrSortColumn;
    keys[KEY_RECLICK] = actionExpandOrCollapse;
    keys[KEY_SHIFT_TAB] = actionPrevScreen;
    keys['\t'] = actionNextScreen;
